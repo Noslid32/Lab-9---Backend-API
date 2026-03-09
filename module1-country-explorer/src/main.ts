@@ -52,11 +52,9 @@ function render(state: UiState): void {
     case 'idle':
       showElement(emptyState);
       break;
-
     case 'loading':
       showElement(loadingState);
       break;
-
     case 'success':
       if (state.data.length === 0) {
         showElement(noResultsState);
@@ -65,16 +63,13 @@ function render(state: UiState): void {
         renderCountryList(state.data, countriesList, handleCountryClick);
       }
       break;
-
     case 'error':
       showElement(errorState);
       errorMessage.textContent = state.message;
       break;
-
     case 'empty':
       showElement(noResultsState);
       break;
-
     default: {
       const _exhaustiveCheck: never = state;
       console.error('Estado no manejado:', _exhaustiveCheck);
@@ -136,7 +131,7 @@ async function handleSearch(): Promise<void> {
 }
 
 function handleCountryClick(country: Country): void {
-  openModal(country);
+  void openModal(country);
 }
 
 function handleRetry(): void {
@@ -162,29 +157,26 @@ function setupEventListeners(): void {
 
   retryButton.addEventListener('click', handleRetry);
 
-  // PART 1: Filtro por región
   regionFilter.addEventListener('change', () => {
     selectedRegion = regionFilter.value;
     void loadAllCountries();
   });
 
-  // PART 2: Toggle solo favoritos
   favoritesToggle.addEventListener('click', () => {
     showOnlyFavorites = !showOnlyFavorites;
     favoritesToggle.setAttribute('aria-pressed', String(showOnlyFavorites));
     if (showOnlyFavorites) {
-      favoritesToggle.textContent = '♥ Solo favoritos';
+      favoritesToggle.textContent = '♥ Solo favoritos';  // ← cambia este texto
       favoritesToggle.classList.add('border-pink-500/70', 'text-pink-400', 'bg-pink-500/10');
       favoritesToggle.classList.remove('text-slate-300', 'border-slate-600');
     } else {
-      favoritesToggle.textContent = '♡ Mostrar favoritos';
+      favoritesToggle.textContent = '♡ Mostrar favoritos';  // ← y este
       favoritesToggle.classList.remove('border-pink-500/70', 'text-pink-400', 'bg-pink-500/10');
       favoritesToggle.classList.add('text-slate-300', 'border-slate-600');
     }
     void loadAllCountries();
   });
 
-  // PART 2: Limpiar favoritos
   clearFavoritesBtn.addEventListener('click', () => {
     clearFavorites();
     document.querySelectorAll<HTMLButtonElement>('.heart-btn').forEach((btn) => {
@@ -195,7 +187,6 @@ function setupEventListeners(): void {
     if (showOnlyFavorites) applyFilters();
   });
 
-  // PART 2: Re-filtrar cuando cambia un favorito
   countriesList.addEventListener('favorite-toggled', () => {
     if (showOnlyFavorites) applyFilters();
   });
